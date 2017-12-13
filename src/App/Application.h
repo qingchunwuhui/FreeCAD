@@ -273,7 +273,7 @@ protected:
     void slotRedoDocument(const App::Document&);
     //@}
 
-private:
+public:
     /// Constructor
     Application(std::map<std::string,std::string> &mConfig);
     /// Destructor
@@ -285,6 +285,10 @@ private:
     static ParameterManager *_pcUserParamMngr;
     //@}
 
+	// the one and only pointer to the application object
+	static Application *_pcSingleton;
+
+private:
 
     //---------------------------------------------------------------------
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
@@ -330,8 +334,7 @@ private:
     static void initConfig(int argc, char ** argv);
     static void initApplication(void);
     static void logStatus(void);
-    // the one and only pointer to the application object
-    static Application *_pcSingleton;
+   
     /// argument helper function
     static void ParseOptions(int argc, char ** argv);
     /// checks if the environment is allreight

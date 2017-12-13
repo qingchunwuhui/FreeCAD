@@ -65,6 +65,10 @@ private Q_SLOTS:
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
     void onUpdateView(bool);
+	void onUsePadDir(bool);
+	void onDirXChanged(double);
+	void onDirYChanged(double);
+	void onDirZChanged(double);
 
 protected:
     void changeEvent(QEvent *e);

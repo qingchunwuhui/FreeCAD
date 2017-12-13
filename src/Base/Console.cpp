@@ -645,7 +645,7 @@ ConsoleObserverStd::~ConsoleObserverStd()
 
 void ConsoleObserverStd::Message(const char *sMsg)
 {
-    printf("%s",sMsg);
+    printf("Message:%s",sMsg);
 }
 
 void ConsoleObserverStd::Warning(const char *sWarn)
@@ -655,7 +655,7 @@ void ConsoleObserverStd::Warning(const char *sWarn)
 #   elif defined(FC_OS_LINUX)
     printf("\033[1;33m");
 #   endif
-    printf("%s",sWarn);
+    printf("Warning:%s",sWarn);
 #   if defined(FC_OS_WIN32)
     ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
 #   elif defined(FC_OS_LINUX)
@@ -671,7 +671,7 @@ void ConsoleObserverStd::Error  (const char *sErr)
 #   elif defined(FC_OS_LINUX)
     printf("\033[1;31m");
 #   endif
-    printf("%s",sErr);
+    printf("Error:%s",sErr);
 #   if defined(FC_OS_WIN32)
     ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
 #   elif defined(FC_OS_LINUX)
@@ -683,11 +683,11 @@ void ConsoleObserverStd::Error  (const char *sErr)
 void ConsoleObserverStd::Log    (const char *sErr)
 {
 #   if defined(FC_OS_WIN32)
-    ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED |FOREGROUND_GREEN);
+	::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN);
 #   elif defined(FC_OS_LINUX)
     printf("\033[1;36m");
 #   endif
-    printf("%s",sErr);
+    printf("Log:%s",sErr);
 #   if defined(FC_OS_WIN32)
     ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
 #   elif defined(FC_OS_LINUX)

@@ -77,6 +77,14 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
             this, SLOT(onFaceName(QString)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
+	connect(ui->checkBoxUsePadDir, SIGNAL(toggled(bool)),
+			this, SLOT(onUsePadDir(bool)));
+	connect(ui->dirX, SIGNAL(valueChanged(double)),
+			this, SLOT(onDirXChanged(double)));
+	connect(ui->dirY, SIGNAL(valueChanged(double)),
+			this, SLOT(onDirYChanged(double)));
+	connect(ui->dirZ, SIGNAL(valueChanged(double)),
+			this, SLOT(onDirZChanged(double)));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -88,6 +96,9 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     ui->buttonFace->blockSignals(true);
     ui->lineFaceName->blockSignals(true);
     ui->changeMode->blockSignals(true);
+	ui->dirX->blockSignals(true);
+	ui->dirY->blockSignals(true);
+	ui->dirZ->blockSignals(true);
 
     // set the history path
     ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength"));
@@ -108,6 +119,16 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
         if (upToFace.substr(0,4) == "Face")
             faceId = std::atoi(&upToFace[4]);
     }
+
+	//set pad dir check and dir vector
+	bool usepaddir = pcPad->UsePadDir.getValue();
+	ui->checkBoxUsePadDir->setChecked(usepaddir);
+	Base::Vector3d dirvalue = pcPad->PadDir.getValue();
+	ui->dirX->setValue(dirvalue.x);
+	ui->dirY->setValue(dirvalue.y);
+	ui->dirZ->setValue(dirvalue.z);
+	onUsePadDir(usepaddir);
+	
 
     // Fill data into dialog elements
     ui->lengthEdit->setMinimum(0);
@@ -148,6 +169,9 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     ui->buttonFace->blockSignals(false);
     ui->lineFaceName->blockSignals(false);
     ui->changeMode->blockSignals(false);
+	ui->dirX->blockSignals(false);
+	ui->dirY->blockSignals(false);
+	ui->dirZ->blockSignals(false);
     updateUI(index);
 
     // if it is a newly created object use the last value of the history
@@ -276,6 +300,61 @@ void TaskPadParameters::onReversed(bool on)
     if (updateView())
         pcPad->getDocument()->recomputeFeature(pcPad);
 }
+
+
+void PartDesignGui::TaskPadParameters::onUsePadDir(bool on)
+{
+	ui->dirX->setEnabled(on);
+	ui->dirY->setEnabled(on);
+	ui->dirZ->setEnabled(on);
+	PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+	if (pcPad)
+	{
+		pcPad->UsePadDir.setValue(on);
+		if (updateView())
+			pcPad->getDocument()->recomputeFeature(pcPad);
+	}
+}
+
+void PartDesignGui::TaskPadParameters::onDirXChanged(double val)
+{
+	PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+	if (pcPad)
+	{
+		Base::Vector3d curval = pcPad->PadDir.getValue();
+		Base::Vector3d changedval = Base::Vector3d(val, curval.y, curval.z).Normalize();
+		pcPad->PadDir.setValue(changedval);
+		if (updateView())
+			pcPad->getDocument()->recomputeFeature(pcPad);
+	}
+}
+
+void PartDesignGui::TaskPadParameters::onDirYChanged(double val)
+{
+	PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+	if (pcPad)
+	{
+		Base::Vector3d curval = pcPad->PadDir.getValue();
+		Base::Vector3d changedval = Base::Vector3d(curval.x, val, curval.z).Normalize();
+		pcPad->PadDir.setValue(changedval);
+		if (updateView())
+			pcPad->getDocument()->recomputeFeature(pcPad);
+	}
+}
+
+void PartDesignGui::TaskPadParameters::onDirZChanged(double val)
+{
+	PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+	if (pcPad)
+	{
+		Base::Vector3d curval = pcPad->PadDir.getValue();
+		Base::Vector3d changedval = Base::Vector3d(curval.x, curval.y, val).Normalize();
+		pcPad->PadDir.setValue(changedval);
+		if (updateView())
+			pcPad->getDocument()->recomputeFeature(pcPad);
+	}
+}
+
 
 void TaskPadParameters::onLength2Changed(double len)
 {

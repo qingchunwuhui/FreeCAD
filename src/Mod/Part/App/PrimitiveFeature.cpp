@@ -196,16 +196,16 @@ short Vertex::mustExecute() const
 
 App::DocumentObjectExecReturn *Vertex::execute(void)
 {
-    gp_Pnt point;
-    point.SetX(this->X.getValue());
-    point.SetY(this->Y.getValue());
-    point.SetZ(this->Z.getValue());
-    
-    BRepBuilderAPI_MakeVertex MakeVertex(point);
-    const TopoDS_Vertex& vertex = MakeVertex.Vertex();
-    this->Shape.setValue(vertex);
+	gp_Pnt point;
+	point.SetX(this->X.getValue());
+	point.SetY(this->Y.getValue());
+	point.SetZ(this->Z.getValue());
 
-    return App::DocumentObject::StdReturn;
+	BRepBuilderAPI_MakeVertex MakeVertex(point);
+	const TopoDS_Vertex& vertex = MakeVertex.Vertex();
+	this->Shape.setValue(vertex);
+
+	return App::DocumentObject::StdReturn;
 }
 
 

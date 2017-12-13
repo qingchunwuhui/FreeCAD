@@ -586,7 +586,7 @@ bool Document::undo(void)
         delete mUndoTransactions.back();
         mUndoTransactions.pop_back();
 
-        signalUndo(*this);
+		signalUndo(*this);
         return true;
     }
 

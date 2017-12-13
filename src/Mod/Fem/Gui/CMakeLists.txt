@@ -236,3 +236,4 @@ SET_BIN_DIR(FemGui FemGui /Mod/Fem)
 SET_PYTHON_PREFIX_SUFFIX(FemGui)
 
 INSTALL(TARGETS FemGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+                                                                                                                                                                                                                                                                                                                                                                                                                             

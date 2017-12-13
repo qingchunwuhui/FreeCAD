@@ -29,6 +29,11 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopTools_ListOfShape.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopTools_ListOfShape.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -82,7 +87,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepFilletAPI_MakeFillet mkFillet(baseShape._Shape);
+		BRepFilletAPI_MakeFillet mkFillet(baseShape._Shape);
 
         for (std::vector<std::string>::const_iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
@@ -96,6 +101,11 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
+
+		//获取edge的集合
+		TopTools_IndexedMapOfShape edgesmap;
+		TopExp::MapShapes(shape, TopAbs_EDGE, edgesmap);
+
 
         TopTools_ListOfShape aLarg;
         aLarg.Append(baseShape._Shape);

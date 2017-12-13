@@ -125,3 +125,7 @@ endif(BUILD_JTREADER)
 if(BUILD_PATH)
     add_subdirectory(Path)
 endif(BUILD_PATH)
+
+# if(BUILD_ARIGIN3D)
+	# add_subdirectory(Arigin3D)
+# endif(BUILD_ARIGIN3D)

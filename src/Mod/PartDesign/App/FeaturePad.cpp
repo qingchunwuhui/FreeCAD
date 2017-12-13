@@ -63,6 +63,8 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(Length,(100.0),"Pad",App::Prop_None,"Pad length");
     ADD_PROPERTY_TYPE(Length2,(100.0),"Pad",App::Prop_None,"P");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",App::Prop_None,"Face where pad will end");
+	ADD_PROPERTY_TYPE(UsePadDir, (false), "Pad", App::Prop_None, "Use Pad Dir");
+	ADD_PROPERTY_TYPE(PadDir, (0.0, 0.0, 1.0), "Pad", App::Prop_None, "use define Pad dir");
 }
 
 short Pad::mustExecute() const
@@ -115,7 +117,15 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     try {
         support.Move(invObjLoc);
 
-        gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
+		gp_Dir dir(SketchVector.x, SketchVector.y, SketchVector.z);
+
+		//wxf add 2017.12.12
+		if (UsePadDir.getValue() == true)
+		{
+			Base::Vector3d paddir = PadDir.getValue();
+			dir.SetCoord(paddir.x, paddir.y, paddir.z);
+		}
+			
         dir.Transform(invObjLoc.Transformation());
 
         TopoDS_Shape sketchshape = makeFace(wires);

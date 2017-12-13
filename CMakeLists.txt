@@ -348,6 +348,10 @@ if(BUILD_START)
   set(BUILD_WEB ON)
 endif(BUILD_START)
 
+if(BUILD_ARIGIN3D)
+	set(BUILD_PART ON)
+endif(BUILD_ARIGIN3D)
+
 #leaving test module for someone else.
 #image has none. as far as I can tell.
 #mesh has none. as far as I can tell.

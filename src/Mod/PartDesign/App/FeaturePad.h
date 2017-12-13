@@ -43,6 +43,8 @@ public:
     App::PropertyLength         Length;
     App::PropertyLength         Length2;
     App::PropertyLinkSub        UpToFace;
+	App::PropertyBool			UsePadDir;
+	App::PropertyVector			PadDir;
 
     /** @name methods override feature */
     //@{
